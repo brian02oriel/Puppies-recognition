@@ -36,6 +36,7 @@ def setting_dataset(data_path, class_name):
                             _blockStride=(cell_size[1], cell_size[0]),
                             _cellSize=(cell_size[1], cell_size[0]),
                             _nbins=nbins)
+        
         # Create numpy array shape which we use to create hog_feats
         n_cells = (gray.shape[0] // cell_size[0], gray.shape[1] // cell_size[1])
 
@@ -45,7 +46,7 @@ def setting_dataset(data_path, class_name):
         hog_feats = hog.compute(gray).reshape(n_cells[1] - block_size[1] + 1,
                                 n_cells[0] - block_size[0] + 1,
                                 block_size[0], block_size[1], nbins).transpose((1, 0, 2, 3, 4))  
-
+        
         # Create our gradients array with nbin dimensions to store gradient orientations 
         gradients = np.zeros((n_cells[0], n_cells[1], nbins))
 
@@ -79,6 +80,8 @@ data_path_2 = './n02085620-Chihuahua/'
 
 setting_dataset(data_path_2, 2.0)
 
+print(Data_Set[0])
+print(Labels[0])
 print(type(Data_Set))
 print(type(Labels))
 X = np.array(Data_Set)
