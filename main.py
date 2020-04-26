@@ -88,17 +88,6 @@ X = np.array(Data_Set)
 y = np.array(Labels)
 y = y.reshape(len(y), 1)
 X = X.reshape(len(X), 1)
-# Plot HOGs using Matplotlib
-# angle is 360 / nbins * direction
-#color_bins = 5
-#plt.pcolor(Data_Set[100][:, :, color_bins])
-#plt.gca().invert_yaxis()
-#plt.gca().set_aspect('equal', adjustable='box')
-#plt.colorbar()
-#plt.show()
-#cv2.destroyAllWindows()
-#print(X)
-#print(y)
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 4)
 
