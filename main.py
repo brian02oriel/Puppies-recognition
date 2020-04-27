@@ -36,39 +36,19 @@ def setting_dataset(data_path, class_name):
                             _blockStride=(cell_size[1], cell_size[0]),
                             _cellSize=(cell_size[1], cell_size[0]),
                             _nbins=nbins)
-        
+        #print(hog)
         # Create numpy array shape which we use to create hog_feats
-        n_cells = (gray.shape[0] // cell_size[0], gray.shape[1] // cell_size[1])
+        #n_cells = (gray.shape[0] // cell_size[0], gray.shape[1] // cell_size[1])
+
+        #print(n_cells)
 
         # We index blocks by rows first.
         # hog_feats now contains the gradient amplitudes for each direction,
         # for each cell of its group for each group. Indexing is by rows then columns.
-        hog_feats = hog.compute(gray).reshape(n_cells[1] - block_size[1] + 1,
-                                n_cells[0] - block_size[0] + 1,
-                                block_size[0], block_size[1], nbins).transpose((1, 0, 2, 3, 4))  
-        
-        # Create our gradients array with nbin dimensions to store gradient orientations 
-        gradients = np.zeros((n_cells[0], n_cells[1], nbins))
+        hog_feats = hog.compute(gray)
+        #print(hog_feats)
 
-        # Create array of dimensions 
-        cell_count = np.full((n_cells[0], n_cells[1], 1), 0, dtype=int)
-
-        # Block Normalization
-        for off_y in range(block_size[0]):
-            for off_x in range(block_size[1]):
-                gradients[off_y:n_cells[0] - block_size[0] + off_y + 1,
-                        off_x:n_cells[1] - block_size[1] + off_x + 1] += \
-                    hog_feats[:, :, off_y, off_x, :]
-                cell_count[off_y:n_cells[0] - block_size[0] + off_y + 1,
-                        off_x:n_cells[1] - block_size[1] + off_x + 1] += 1
-
-        # Average gradients
-        gradients /= cell_count
-        #print("Gradients:")
-        #print(i, '\n')
-        #print(gradients)
-        
-        Data_Set.append(gradients)
+        Data_Set.append(hog_feats)
         Labels.append(class_name) # 1 for japanese spaniel | 0 for non japanese spaniel
 
         
@@ -80,8 +60,10 @@ data_path_2 = './n02085620-Chihuahua/'
 
 setting_dataset(data_path_2, 2.0)
 
-print(Data_Set[0])
-print(Labels[0])
+print("len", len(Data_Set))
+print("shape 1", Data_Set[0].shape)
+
+
 print(type(Data_Set))
 print(type(Labels))
 X = np.array(Data_Set)
@@ -99,6 +81,6 @@ print(y_train.shape)
 #print(y_train)
 
 clf = svm.SVC()
-clf.fit(X_train, y_train)
+#clf.fit(X_train, y_train)
 print("finalizado")
 
